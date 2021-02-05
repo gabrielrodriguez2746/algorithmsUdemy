@@ -1,6 +1,6 @@
-package linked
+package doubleLinked
 
-data class LinkedList(private var head: Node? = null, private var tail: Node? = null, private var length: Int = 0) {
+data class DoubleLinkedList(private var head: Node? = null, private var tail: Node? = null, private var length: Int = 0) {
 
     /**
      * Should receive a @param value
@@ -10,7 +10,7 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
      * Increment the length by one
      * @return  the list
      */
-    fun push(value: Any): LinkedList {
+    fun push(value: Any): DoubleLinkedList {
         val node = Node(value)
         when (head) {
             null -> {
@@ -19,6 +19,7 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
             }
             else -> {
                 tail?.next = node
+                node.previous = tail
                 tail = node
             }
         }
@@ -29,8 +30,9 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
     /**
      * If there are no nodes in the list
      * @return null
-     * Loop until reach the tail as next
-     * Set the next to null and the tail to this found value
+     * Store the cyrrent tail to return it
+     * If the head and the tail are equals set both to null
+     * Update the tail to be the previous node with next null
      * Decrement the length
      * Return the started tail
      */
@@ -46,12 +48,9 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
             }
             else -> {
                 val popValue = tail
-                var newTale = head
-                while (newTale?.next != tail) {
-                    newTale = newTale?.next
-                }
-                newTale?.next = null
-                tail = newTale
+                tail = tail?.previous
+                tail?.next = null
+                popValue?.previous = null
                 length--
                 return popValue
             }
@@ -62,6 +61,8 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
      * If there are no nodes return undefined
      * Store the head in a variable
      * Set the head to the next current head
+     * Set the previous of the new head to be null
+     * Set the previous head next null
      * Decrement length
      * @return value
      */
@@ -78,6 +79,8 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
             else -> {
                 val shiftValue = head
                 head = head?.next
+                head?.previous = null
+                shiftValue?.next = null
                 length--
                 return shiftValue
             }
@@ -88,11 +91,11 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
      * Accept a @param value
      * Create new node
      * No head -> set head and tail to be the new created node
-     * Otherwise new node next = previous head
+     * Otherwise previous of head = node, new node next = previous head
      * Increment the length
      * @return the list
      */
-    fun unShift(value: Any): LinkedList {
+    fun unShift(value: Any): DoubleLinkedList {
         val node = Node(value)
         when (head) {
             null -> {
@@ -100,8 +103,10 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
                 tail = node
             }
             else -> {
+                head?.previous = node
                 node.next = head
                 head = node
+
             }
         }
         length++
@@ -111,12 +116,21 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
     /**
      * This function should accept a @param index
      * If the index is less than 0 or greater than length then return null
-     * Loop through the list until you reach the index and
+     * Loop through the list (from the end or the beginning) until you reach the index and
      * @return the node at that index
      */
     fun get(index: Int): Node? {
         return when {
             index < 0 || index > length -> null
+            index > length / 2 -> {
+                var nodeIndex = length -1
+                var indexNode = tail
+                while (nodeIndex != index) {
+                    indexNode = indexNode?.previous
+                    nodeIndex--
+                }
+                indexNode
+            }
             else -> {
                 var nodeIndex = 0
                 var indexNode = head
@@ -153,7 +167,7 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
      * Index 0 use unShift
      * Otherwise access node at index -1
      * Set the next to be the new node
-     * Set the next for the new to be the previous next
+     * Set the next for the new to be the previous next and all the other connections
      * Increment the length
      * @return true
      */
@@ -165,7 +179,9 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
             else -> {
                 val previousNode = get(index - 1)
                 val previousNext = previousNode?.next
-                previousNode?.next = Node(value, previousNext)
+                val node = Node(value, previousNext, previousNode)
+                previousNode?.next = node
+                previousNext?.previous = node
                 length++
             }
         }
@@ -192,7 +208,11 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
             else -> {
                 val previousNode = get(index - 1)
                 val toBeRemoved = previousNode?.next
-                previousNode?.next = toBeRemoved?.next
+                val nextFromToBeRemoved = toBeRemoved?.next
+                previousNode?.next = nextFromToBeRemoved
+                nextFromToBeRemoved?.previous = previousNode
+                toBeRemoved?.next = null
+                toBeRemoved?.previous = null
                 length--
                 toBeRemoved
             }
@@ -210,7 +230,7 @@ data class LinkedList(private var head: Node? = null, private var tail: Node? = 
      * Set the previous to be the value of the node variable
      * Set the node variable to be the value of the next variable
      */
-    fun reverse(): LinkedList {
+    fun reverse(): DoubleLinkedList {
         var node = head
         head = tail
         tail = node
