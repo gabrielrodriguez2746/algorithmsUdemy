@@ -1,6 +1,10 @@
 package doubleLinked
 
-data class DoubleLinkedList(private var head: Node? = null, private var tail: Node? = null, private var length: Int = 0) {
+data class DoubleLinkedList(
+    internal var head: Node? = null,
+    internal var tail: Node? = null,
+    internal var length: Int = 0
+) {
 
     /**
      * Should receive a @param value
@@ -217,32 +221,6 @@ data class DoubleLinkedList(private var head: Node? = null, private var tail: No
                 toBeRemoved
             }
         }
-    }
-
-    /**
-     * Swap the head and the tail
-     * Create a variable called next
-     * Create a variable called previous
-     * Create a variable called node and initialize it to the head property
-     * Loop through the list
-     * Set next to be the next property on whatever node is
-     * Set next on the node to what ever previous is
-     * Set the previous to be the value of the node variable
-     * Set the node variable to be the value of the next variable
-     */
-    fun reverse(): DoubleLinkedList {
-        var node = head
-        head = tail
-        tail = node
-        var next: Node?
-        var previous: Node? = null
-        for (i in 0..length) {
-            next = node?.next
-            node?.next = previous
-            previous = node
-            node = next
-        }
-        return this
     }
 
 }

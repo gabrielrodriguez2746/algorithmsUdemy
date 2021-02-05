@@ -1,6 +1,10 @@
 package linked
 
-data class LinkedList(private var head: Node? = null, private var tail: Node? = null, private var length: Int = 0) {
+data class LinkedList(
+    internal var head: Node? = null,
+    internal var tail: Node? = null,
+    internal var length: Int = 0
+) {
 
     /**
      * Should receive a @param value
