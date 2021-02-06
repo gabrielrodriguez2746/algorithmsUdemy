@@ -24,4 +24,17 @@ class BinarySearchTreeTest {
         }
     }
 
+    @Test
+    fun bfs() {
+        with(BinarySearchTree()) {
+            insert(10)
+            insert(6)
+            insert(15)
+            insert(3)
+            insert(8)
+            insert(20)
+            assertTrue { bfs().toTypedArray() contentEquals listOf(10, 6, 15, 3, 8, 20).toTypedArray() }
+        }
+    }
+
 }

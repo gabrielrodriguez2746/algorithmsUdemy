@@ -9,7 +9,7 @@ data class Node(val value: Int, var left: Node? = null, var right: Node? = null)
             } else {
                 right?.insert(value)
             }
-        } else {
+        } else if (value < this.value) {
             if (left == null) {
                 left = Node(value)
             } else {

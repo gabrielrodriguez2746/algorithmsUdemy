@@ -27,4 +27,31 @@ data class BinarySearchTree(internal var root: Node? = null) {
         return root?.find(value) ?: false
     }
 
+    /**
+     * Create a queue (FIFO)
+     * and list on node visited
+     * Place the root in the queue
+     * Loop until there is anything in the queue
+     * If left push to the queue if right push to the queue
+     * Keep processing until no more items
+     * Not:: This method is for all binary trees
+     * @return list BFS
+     */
+    fun bfs(): List<Int> {
+        return root?.let {
+            val data = mutableListOf<Int>()
+            bfs(mutableListOf(it), data)
+            data
+        } ?: emptyList()
+    }
+
+    private fun bfs(queue: MutableList<Node>, data: MutableList<Int>) {
+        if (queue.isEmpty()) return
+        val node = queue.removeFirst()
+        data.add(node.value)
+        node.left?.let { queue.add(it) }
+        node.right?.let { queue.add(it) }
+        bfs(queue, data)
+    }
+
 }
