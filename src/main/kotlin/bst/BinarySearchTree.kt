@@ -54,4 +54,54 @@ data class BinarySearchTree(internal var root: Node? = null) {
         bfs(queue, data)
     }
 
+    /**
+     * Visit al nodes from one side until there are no more leaf
+     * @return list DFS
+     */
+    fun dfsPreOrder(): List<Int> {
+        val data = mutableListOf<Int>()
+        dfsPreOrder(root, data)
+        return data
+    }
+
+    private fun dfsPreOrder(node: Node?, data: MutableList<Int>) {
+        if (node == null) return
+        data.add(node.value)
+        dfsPreOrder(node.left, data)
+        dfsPreOrder(node.right, data)
+    }
+
+    /**
+     * Explore al nodes are no more leaf and the "visit the nodes"
+     * @return list DFS
+     */
+    fun dfsPostOrder(): List<Int> {
+        val data = mutableListOf<Int>()
+        dfsPostOrder(root, data)
+        return data
+    }
+
+    private fun dfsPostOrder(node: Node?, data: MutableList<Int>) {
+        if (node == null) return
+        dfsPostOrder(node.left, data)
+        dfsPostOrder(node.right, data)
+        data.add(node.value)
+    }
+    /**
+     * Explore al nodes to the left, then visit root and then go right
+     * @return list DFS
+     */
+    fun dfsInOrder(): List<Int> {
+        val data = mutableListOf<Int>()
+        dfsInOrder(root, data)
+        return data
+    }
+
+    private fun dfsInOrder(node: Node?, data: MutableList<Int>) {
+        if (node == null) return
+        dfsInOrder(node.left, data)
+        data.add(node.value)
+        dfsInOrder(node.right, data)
+    }
+
 }

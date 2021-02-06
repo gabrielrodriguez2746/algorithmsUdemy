@@ -25,7 +25,7 @@ class BinarySearchTreeTest {
     }
 
     @Test
-    fun bfs() {
+    fun bfs_DfsPreOrder_DfsPostOrder() {
         with(BinarySearchTree()) {
             insert(10)
             insert(6)
@@ -34,6 +34,9 @@ class BinarySearchTreeTest {
             insert(8)
             insert(20)
             assertTrue { bfs().toTypedArray() contentEquals listOf(10, 6, 15, 3, 8, 20).toTypedArray() }
+            assertTrue { dfsPreOrder().toTypedArray() contentEquals listOf(10, 6, 3, 8, 15, 20).toTypedArray() }
+            assertTrue { dfsPostOrder().toTypedArray() contentEquals listOf(3, 8, 6, 20, 15, 10).toTypedArray() }
+            assertTrue { dfsInOrder().toTypedArray() contentEquals listOf(3, 6, 8, 10, 15, 20).toTypedArray() }
         }
     }
 
