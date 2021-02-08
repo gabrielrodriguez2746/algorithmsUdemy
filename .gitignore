@@ -16,6 +16,7 @@ gradle-app.setting
 # IDE
 .idea/
 *.iml
+*.patch
 
 /local.properties
 /.idea

@@ -8,5 +8,3 @@ package execises
 fun <T> areThereDuplicates(vararg arguments: T): Boolean {
     return arguments.groupBy { it }.size < arguments.size
 }
-
-// TODO Think in a no kotlin friendly implementation ;D
